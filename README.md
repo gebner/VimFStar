@@ -1,16 +1,16 @@
-# VimFStar Interactive
+# VimFStar
 
-*VimFStar Interactive* is a [Vim] plugin for [F*], an [ML]-like language with a type system for program verification.
+*VimFStar* is a [neovim] plugin for [F*], an [ML]-like language with a type system for program verification.
 
 ## Features
 
-- `.fst` file detection.
-- Syntax highlighting (based on [Vim's OCaml syntax file]).
+- Syntax highlighting
+- Language server support
 - Interactive verification of code
 
 ## Installation
 
-You can use your favorite [pathogen]-compatible plugin manager to install *VimFStar*. 
+You can use your favorite [pathogen]-plugin manager to install *VimFStar*. 
 
 If you're using [vim-plug], for example, perform the following steps to install *VimFStar*:
 
@@ -19,12 +19,13 @@ If you're using [vim-plug], for example, perform the following steps to install 
 	```vim
 	call plug#begin()
 	" ...
+	Plug 'neovim/nvim-lspconfig', {'for': 'fstar'}
 	Plug 'FStarLang/VimFStar', {'for': 'fstar'}
 	" ...
 	call plug#end()
 	```
 
-2. Restart Vim
+2. Restart neovim
 3. `:PlugInstall` to install the plugin.
 
 ## Use of the interactive verification
