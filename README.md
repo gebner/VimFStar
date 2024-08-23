@@ -24,57 +24,30 @@ If you're using [vim-plug], for example, perform the following steps to install 
 	" ...
 	call plug#end()
 	```
-
-2. Restart neovim
-3. `:PlugInstall` to install the plugin.
+2. Add the setup code for the F* plugin to your vimrc:
+    ```vim
+    lua require'fstar'.setup{}
+    ```
+3. Restart neovim
+4. `:PlugInstall` to install the plugin.
 
 ## Use of the interactive verification
 
-*Note: Interactive mode requires a Cygwin build of (g)Vim.*
+Make sure that `fstar.exe` and `z3` are in your path.  The first time you open an F* file, VimFStar will download the LSP server.  It will make use of the same `.fst.config.json` files as the official VS Code extension.
 
-First, put ```fstar.exe``` in your $PATH. VimFStar will check that ```fstar.exe``` is present before loading interactive functions.
+To test your code and it to the environment up to the current position of the cursor, call `:FStarVerifyToPoint` (default binding: `<LocalLeader><LocalLeader>`).
 
-To test your code and it to the environment up to the current position of the cursor, press ```<F2>``` in normal mode. The marker ```v``` is set to the line just after the end of the checked part, so you can go there with ```'v```. If you already know that your code is correct until the cursor and just want to add it to the context, you can press ```<F6>``` for a quick test (useful for projects with thousands of lines and where normal tests last very long).
-
-If you want to test some part of your code without adding it to the environment, select it in visual line mode (Shift+V) and press ```<F2>```
-
-If you want to get the result of the test you launched, press ```<F3>``` in normal mode
-
-If you want to see again the errors sent by F*, press ```<F4>```
-
-If you are working on a big chunk of code, and it has no empty new line inside, you can try to select it quicker with ```<F5>``` in order to check it with ```<F2>```. You can go back to where you were with ```<CTRL-o><CTRL-o>``` 
-
-You can reset the interaction with the command ```:Freset``` in case something went wrong or if
-you want to change a checked part.
-
-If you want to use library files and/or set options, use ```build-config``` in your file. For example, if my file is at ```$FSTAR_HOME/examples/metatheory``` and I want to use ```classical.fst``` and ```ext.fst``` in ```$FSTAR_HOME/lib``` and set some options, I will put the following code at the top of my file:
-
-```fstar
-(*--build-config
-    options:--z3timeout 20 --max_fuel 8 --max_ifuel 6 --initial_fuel 4 --initial_ifuel 2;
-    other-files:../../lib/classical.fst ../../lib/ext.fst
-  --*)
-```
-
-This configuration is read when the buffer is loaded or when the plugin is reset. So do not forget to reset the plugin if you change `build-config`.
+You can restart F* with `:FStarRestart` (default binding: `<LocalLeader>r`)
 
 ## License
 
-*VimFStar* is distributed under the same license as Vim itself. See [LICENSE] for more details.
+The syntax highlighting code of *VimFStar* is distributed under the same license as Vim itself. See [LICENSE] for more details.
 
-## Planned Improvements
+The rest of the plugin is licensed under the Apache license.  Large parts of the plugin are adapted from lean.nvim.  TODO
 
-- more accurate syntax highlighting.
-- [syntastic] integration.
-- better highlighting of verified code
-- quick access to error locations
-- ability to pop environment
-
-[ML]:http://en.wikipedia.org/wiki/ML_(programming_language)
-[Vim]: http://www.vim.org
-[F*]: http://www.fstar-lang.org
+[ML]: https://en.wikipedia.org/wiki/ML_(programming_language)
+[neovim]: https://neovim.org
+[F*]: https://fstar-lang.org
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pathogen]: https://github.com/tpope/vim-pathogen
-[syntastic]: https://github.com/scrooloose/syntastic
-[Vim's OCaml syntax file]: https://github.com/vim/vim/blob/master/runtime/syntax/ocaml.vim
 [LICENSE]: http://github.com/FStarLang/VimFStar/blob/master/LICENSE
