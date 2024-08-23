@@ -1,6 +1,6 @@
 # VimFStar
 
-*VimFStar* is a [neovim] plugin for [F*], an [ML]-like language with a type system for program verification.
+*VimFStar* is a [neovim] plugin for [F*], an ML-like language with a type system for program verification.
 
 ## Features
 
@@ -19,8 +19,8 @@ If you're using [vim-plug], for example, perform the following steps to install 
 	```vim
 	call plug#begin()
 	" ...
-	Plug 'neovim/nvim-lspconfig', {'for': 'fstar'}
-	Plug 'FStarLang/VimFStar', {'for': 'fstar'}
+	Plug 'neovim/nvim-lspconfig'
+	Plug 'gebner/VimFStar'
 	" ...
 	call plug#end()
 	```
@@ -41,13 +41,14 @@ You can restart F* with `:FStarRestart` (default binding: `<LocalLeader>r`)
 
 ## License
 
-The syntax highlighting code of *VimFStar* is distributed under the same license as Vim itself. See [LICENSE] for more details.
+The syntax highlighting file is distributed under the same license as Vim itself. See [LICENSE.VIM] for more details.
 
-The rest of the plugin is licensed under the Apache license.  Large parts of the plugin are adapted from lean.nvim.  TODO
+The rest of the plugin is licensed under the Apache license.  Large parts of the plugin are adapted from lean.nvim, which is MIT-licensed.  See [LICENSE] for more details.
 
 [ML]: https://en.wikipedia.org/wiki/ML_(programming_language)
 [neovim]: https://neovim.org
 [F*]: https://fstar-lang.org
 [vim-plug]: https://github.com/junegunn/vim-plug
 [pathogen]: https://github.com/tpope/vim-pathogen
+[LICENSE.VIM]: http://github.com/FStarLang/VimFStar/blob/master/LICENSE.VIM
 [LICENSE]: http://github.com/FStarLang/VimFStar/blob/master/LICENSE
