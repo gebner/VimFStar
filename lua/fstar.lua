@@ -1,7 +1,7 @@
 local fstar = {
   mappings = {
     n = {
-      ['<LocalLeader>.'] = '<Cmd>FStarVerifyToPoint<CR>',
+      ['<LocalLeader><LocalLeader>'] = '<Cmd>FStarVerifyToPoint<CR>',
     },
     i = {},
   },
