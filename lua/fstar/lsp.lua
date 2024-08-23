@@ -1,5 +1,17 @@
 local lsp = { handlers = {} }
 
+local bundled_server_url = 'https://github.com/FStarLang/fstar-vscode-assistant/releases/download/v0.12.0/fstar-language-server-0.12.0.js'
+
+local bundled_server_path =
+  vim.fs.dirname(vim.fs.dirname(vim.fs.dirname(debug.getinfo(1, "S").source:sub(2)))) .. '/' .. vim.fs.basename(bundled_server_url)
+
+function lsp.download_lsp_server()
+  if not vim.uv.fs_stat(bundled_server_path) then
+    vim.system({'curl', '-L', bundled_server_url, '-o', bundled_server_path}):wait()
+    print('Downloaded ' .. vim.fs.basename(bundled_server_url))
+  end
+  return path
+end
 
 function lsp.enable(opts)
   opts.handlers = vim.tbl_extend('keep', opts.handlers or {}, {
@@ -9,9 +21,14 @@ function lsp.enable(opts)
   -- })
   require'lspconfig.configs'['fstar'] = {
     default_config = {
-      cmd = { 'node', '/home/gebner/fstar-vscode-assistant/fstar-language-server-0.11.0.js', '--stdio' },
+      cmd = { 'node', bundled_server_path, '--stdio' },
       filetypes = { 'fstar' },
-      root_dir = require'lspconfig.util'.find_git_ancestor,
+      root_dir = function(startpath)
+        if opts.auto_download ~= false then
+          lsp.download_lsp_server()
+        end
+        return require'lspconfig.util'.find_git_ancestor(startpath)
+      end,
       settings = {
         fstarVSCodeAssistant = {
           verifyOnOpen = false,
