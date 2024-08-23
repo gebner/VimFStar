@@ -1,27 +1,46 @@
 local progress_bars = {}
-local options = { priority = 10, character = '│' }
+local options = { priority = 10 }
 options._DEFAULTS = vim.deepcopy(options)
 
-local sign_group_name = 'fstarSignProgress'
-local sign_name = 'fstarSignProgress'
+local signs = {
+  'fstarSignStarted',
+  'fstarSignInProgress',
+  'fstarSignLaxOk',
+  'fstarSignOk',
+  'fstarSignFailed',
+}
 
 local proc_infos = {}
 
-local sign_ns = vim.api.nvim_create_namespace 'fstar.progress'
-vim.diagnostic.config({ virtual_text = false }, sign_ns)
-
 local function _update(bufnr)
-  vim.fn.sign_unplace(sign_group_name, { buffer = bufnr })
+  for _,n in ipairs(signs) do
+    vim.fn.sign_unplace(n, { buffer = bufnr })
+  end
   local diagnostics = {}
 
   for _, proc_info in ipairs(proc_infos[vim.uri_from_bufnr(bufnr)]) do
     local start_line = proc_info.range.start.line + 1
     local end_line = proc_info.range['end'].line + 1
 
-    if proc_info.kind == 'ok' then
-      -- TODO
+    local n = nil
+    if proc_info.kind == 'started' then
+      n = 'fstarSignStarted'
+    elseif proc_info.kind == 'in-progress' then
+      n = 'fstarSignInProgress'
+    elseif proc_info.kind == 'ok' then
+      n = 'fstarSignOk'
+    elseif proc_info.kind == 'lax-ok' then
+      n = 'fstarSignLaxOk'
+    -- elseif proc_info.kind == 'light-ok' then
+    --   n = 'fstarSignLightOk'
+    elseif proc_info.kind == 'failed' then
+      n = 'fstarSignFailed'
+    -- elseif proc_info.kind == 'light-failed' then
+    --   n = 'fstarSignLightFailed'
+    end
+    if n then
       for line = start_line, end_line do
-        vim.fn.sign_place(0, sign_group_name, sign_group_name, bufnr, {
+        vim.fn.sign_place(0, n, n, bufnr, {
           lnum = line,
           priority = options.priority,
         })
@@ -53,11 +72,17 @@ end
 function progress_bars.enable(opts)
   options = vim.tbl_extend('force', options, opts)
 
-  vim.fn.sign_define(sign_name, {
-    text = options.character,
-    texthl = 'fstarSignProgress',
-  })
-  vim.cmd.hi 'def fstarSignProgress guifg=green ctermfg=70'
+  local function def(n, ch, hi)
+    vim.fn.sign_define(n, { text = ch, texthl = n })
+    if hi then vim.cmd.hi('def ' .. n .. ' ' .. hi) end
+  end
+
+  def('fstarSignStarted',     '⋮', 'guifg=gray ctermfg=gray')
+  def('fstarSignInProgress',  '▮', 'guifg=orange ctermfg=215')
+  def('fstarSignOk',          '│', 'guifg=green ctermfg=70')
+  def('fstarSignLaxOk',       '│', 'guifg=blue ctermfg=68')
+  def('fstarSignFailed',      '╳', 'guifg=red ctermfg=52')
+
   progress_bars.enabled = true
 end
 
