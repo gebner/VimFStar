@@ -2,6 +2,8 @@ local fstar = {
   mappings = {
     n = {
       ['<LocalLeader><LocalLeader>'] = '<Cmd>FStarVerifyToPoint<CR>',
+      ['<LocalLeader>['] = '<Cmd>FStarLaxVerifyToPoint<CR>',
+      ['<LocalLeader>r'] = '<Cmd>FStarRestart<CR>',
     },
     i = {},
   },
@@ -35,7 +37,7 @@ function fstar.setup(opts)
     command! FStarLaxVerifyWholeFile :lua require'fstar.lsp'.lax_verify()
   ]]
 
-  if opts.mappings == true then
+  if opts.mappings ~= false then
     vim.cmd [[
       augroup fstar_nvim_mappings
         autocmd!
