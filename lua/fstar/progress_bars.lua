@@ -81,7 +81,7 @@ function progress_bars.enable(opts)
   def('fstarSignInProgress',  '▮', 'guifg=orange ctermfg=215')
   def('fstarSignOk',          '│', 'guifg=green ctermfg=70')
   def('fstarSignLaxOk',       '│', 'guifg=blue ctermfg=68')
-  def('fstarSignFailed',      '╳', 'guifg=red ctermfg=52')
+  def('fstarSignFailed',      '╳', 'guifg=red ctermfg=160')
 
   progress_bars.enabled = true
 end
